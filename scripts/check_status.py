@@ -39,8 +39,16 @@ def ensure_web_safe_video(video_url_or_path):
             print(f"⚠️ Failed to download video for transcoding: {e}")
             return video_url_or_path
 
-    if subprocess.call("type ffmpeg", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) != 0:
-        print("⚠️ 'ffmpeg' is not installed. Skipping web-safe video transcoding.")
+    try:
+        import imageio_ffmpeg
+        ffmpeg_cmd = imageio_ffmpeg.get_ffmpeg_exe()
+    except ImportError:
+        ffmpeg_cmd = "ffmpeg"
+
+    try:
+        subprocess.run([ffmpeg_cmd, "-version"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+    except Exception:
+        print("⚠️ 'ffmpeg' binary is missing (not in PATH and imageio-ffmpeg not installed). Skipping web-safe video transcoding.")
         return local_path
         
     out_path = local_path.replace(".mp4", "_websafe.mp4")
@@ -49,7 +57,7 @@ def ensure_web_safe_video(video_url_or_path):
         
     print("🔄 Transcoding video to web-safe format (libx264/yuv420p)...")
     cmd = [
-        "ffmpeg", "-y", "-i", local_path,
+        ffmpeg_cmd, "-y", "-i", local_path,
         "-c:v", "libx264", "-pix_fmt", "yuv420p",
         "-c:a", "aac", "-b:a", "128k",
         "-movflags", "+faststart",
