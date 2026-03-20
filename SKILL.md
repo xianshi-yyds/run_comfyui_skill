@@ -91,7 +91,7 @@ To prevent critical API keys from leaking into shell history logs, terminal outp
 ### 🤖 AI Agent Onboarding Instruction (Handling Missing Keys)
 If you (the AI Agent) attempt to run `inspect_workflow.py` or `run_workflow.py` and receive the error **"Security Error: RunningHub API Key is missing!"**, you MUST automatically execute the following conversational onboarding:
 1. STOP execution and ask the user: *"I need your RunningHub API Key to proceed. Please paste it in the chat, and I will securely configure it for you."*
-2. When the user provides the key (usually starting with `sk-`), YOU (the AI Agent) must use your file-writing tools to create or overwrite the `.env` file in this repository's root directory with the content:
+2. When the user provides the key, YOU (the AI Agent) must use your file-writing tools to create or overwrite the `.env` file in this repository's root directory with the content:
    `RUNNINGHUB_API_KEY="<THE_KEY_PROVIDED>"`
 3. Inform the user that the key was saved securely and automatically resume their original workflow request.
 4. **DO NOT** pass the key using command line variables to the scripts. Always write to `.env`!
