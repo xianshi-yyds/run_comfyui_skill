@@ -12,20 +12,29 @@ except ImportError:
 def main():
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     workflows_path = os.path.join(repo_root, 'workflows.yaml')
+    custom_workflows_path = os.path.join(repo_root, 'workflows_custom.yaml')
     skill_path = os.path.join(repo_root, 'SKILL.md')
-
-    if not os.path.exists(workflows_path):
-        print(f"Error: {workflows_path} not found.")
-        sys.exit(1)
 
     if not os.path.exists(skill_path):
         print(f"Error: {skill_path} not found.")
         sys.exit(1)
 
-    with open(workflows_path, 'r', encoding='utf-8') as f:
-        data = yaml.safe_load(f)
+    workflows = []
+    
+    # Retrieve upstream official workflows
+    if os.path.exists(workflows_path):
+        with open(workflows_path, 'r', encoding='utf-8') as f:
+            data = yaml.safe_load(f)
+            if data and 'workflows' in data:
+                workflows.extend(data.get('workflows', []))
+                
+    # Merge user's private disconnected workflows
+    if os.path.exists(custom_workflows_path):
+        with open(custom_workflows_path, 'r', encoding='utf-8') as f:
+            data = yaml.safe_load(f)
+            if data and 'workflows' in data:
+                workflows.extend(data.get('workflows', []))
 
-    workflows = data.get('workflows', [])
     if not workflows:
         print("No workflows found in workflows.yaml.")
         return

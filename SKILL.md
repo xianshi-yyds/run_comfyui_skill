@@ -42,15 +42,34 @@ python scripts/inspect_workflow.py --workflow <WORKFLOW_ID>
 
 ### Step 3: Local Preparation & Execution
 1. Take the identified parameters (from Step 2) and the user's instructions.
-2. If any parameter is flagged with `[REQUIRES ABSOLUTE FILE PATH]`, ensure you locate that asset on the local disk (e.g. `/tmp/photo.jpg`) and pass its **absolute path**.
-3. Construct a standard JSON string payload.
-4. Execute using the run script. Under the hood, if the engine sees a valid local file path, it will **automatically and securely invoke the RunningHub Upload API** without any additional code required from you.
-
+2. If any parameter requires an absolute file path, locate it and pass it.
+3. Construct the JSON string payload.
+4. **CRITICAL: Asynchronous Execution vs Synchronous**
+   - If generating an Image or quick task: run SYNCHRONOUSLY.
+   - If generating a **Video** or **Long Task**: ALWAYS run ASYNCHRONOUSLY by passing `--async-mode`.
+   - Never wait more than a few minutes synchronously. A video takes 10-30 minutes and will crash the Agent context if waited sequentially.
+   
 ```bash
+# Synchronous (Images)
 python scripts/run_workflow.py \
   --workflow "1983427617984585729" \
-  --params-json '{"prompt": "A futuristic city in the rain", "image": "/tmp/my_photo.jpg"}'
+  --params-json '{"prompt": "A city in the rain"}'
+
+# Asynchronous (Videos)
+python scripts/run_workflow.py \
+  --workflow "1985909483975188481" \
+  --params-json '{"image": "/tmp/source.jpg"}' \
+  --async-mode
 ```
+
+### Step 4: Polling the Video (If Async)
+1. The `--async-mode` will instantly print a `Task ID` (e.g., `188981249712...`) and exit.
+2. Inform the USER that the video generation is in progress.
+3. In subsequent turns, check the status using:
+```bash
+python scripts/check_status.py --task-id <TASK_ID>
+```
+4. If completed, the script will automatically transcode the downloaded video using `ffmpeg` to ensure maximum third-party chat compatibility.
 
 ---
 
