@@ -1,0 +1,18 @@
+# workflows.yaml
+# Intent Registry / Router for AI Agents
+# This file serves as a mapping dictionary for an AI Agent to select the correct Workflow ID
+# purely based on the user's natural language request. 
+
+workflows:
+  - name: image_flux
+    id: "1983427617984585729"
+    description: "Generates high quality text-to-images using Flux. Trigger when the user asks for art, images, avatars, or general pictures."
+    
+  - name: video_wan2.1_fusionx
+    id: "1985909483975188481"
+    description: "Generates videos using the Wan2.1 framework. Used for action transfer, animating images, or creating videos. Trigger when the user asks to animate a photo or create a video."
+
+  # How to add more workflows:
+  # - name: your_custom_workflow_name
+  #   id: "1234567890"
+  #   description: "Describe what this workflow does so the AI Agent knows when to use it."

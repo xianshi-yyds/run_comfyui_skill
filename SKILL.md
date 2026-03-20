@@ -5,7 +5,44 @@ description: Run Cloud AI Workflows via RunningHub using ComfyKit
 
 # call_runninghub
 
-This skill enables an AI Agent to directly trigger RunningHub cloud workflows (such as Image generation, Video generation, TTS, etc.) by passing simple frontend-style parameters. The underlying `comfykit` library dynamically handles parameter mapping (variable names -> nodeId/fieldName definitions) and handles local file uploads automatically.
+This skill enables an AI Agent to dynamically query, inspect, and trigger RunningHub cloud workflows (such as Image generation, Video generation, TTS, etc.). The underlying `comfykit` library fully manages parameter tracking and automatic local file uploads.
+
+## 🌟 The 3-Step "Dynamic Adaption" Methodology
+Because RunningHub workflow IDs and parameter schemas frequently change, AI Agents MUST strictly follow this 3-step routing and execution pattern:
+
+### Step 1: Intent Routing (Find the Right Workflow ID)
+Do NOT guess workflow IDs. Always read the `workflows.yaml` file in this repository first. 
+1. Match the user's natural language request (e.g. "Create an action transfer video") to the `description` fields in `workflows.yaml`.
+2. Extract the corresponding `id` (e.g., `1985909483975188481`).
+
+### Step 2: Parameter Inspection (Find the Required Inputs)
+You must understand what variables the target workflow accepts before invoking it. Use the provided inspection tool:
+
+```bash
+python scripts/inspect_workflow.py --workflow <WORKFLOW_ID>
+```
+**Output Example:**
+```text
+=== Workflow Inspection: 1983427617984585729 ===
+ - Parameter Name : 'prompt' 
+   Node Type      : KSampler
+ - Parameter Name : 'image' 📁 [REQUIRES ABSOLUTE FILE PATH]
+   Node Type      : LoadImage
+```
+
+### Step 3: Local Preparation & Execution
+1. Take the identified parameters (from Step 2) and the user's instructions.
+2. If any parameter is flagged with `[REQUIRES ABSOLUTE FILE PATH]`, ensure you locate that asset on the local disk (e.g. `/tmp/photo.jpg`) and pass its **absolute path**.
+3. Construct a standard JSON string payload.
+4. Execute using the run script. Under the hood, if the engine sees a valid local file path, it will **automatically and securely invoke the RunningHub Upload API** without any additional code required from you.
+
+```bash
+python scripts/run_workflow.py \
+  --workflow "1983427617984585729" \
+  --params-json '{"prompt": "A futuristic city in the rain", "image": "/tmp/my_photo.jpg"}'
+```
+
+---
 
 ## 🔐 Security & API Key Protection
 To prevent critical API keys from leaking into shell history logs, terminal outputs, or LLM context windows, **command-line passing of the API key is strictly disabled**.
@@ -25,31 +62,3 @@ To prevent critical API keys from leaking into shell history logs, terminal outp
 ## Prerequisites
 - Python 3.8+
 - Installed dependencies: `pip install -r requirements.txt`
-- **Workflow ID or File**: A RunningHub numeric ID (e.g. `"1983427617984585729"`) or the relative path to an exported JSON wrapper.
-
-## Usage
-
-Use the provided wrapper script to execute RunningHub workflows. When parameters include local file paths (like images), the underlying logic will automatically upload them to RunningHub and inject the returned URLs/keys before execution.
-
-```bash
-python scripts/run_workflow.py \
-  --workflow "<workflow_id_or_json_path>" \
-  --params-json '{"prompt": "A futuristic city in the rain, cyberpunk style", "width": 1024, "height": 768}'
-```
-
-### Example: Generate an Image by Workflow ID
-```bash
-# Provide API key securely
-export RUNNINGHUB_API_KEY="sk-..."
-
-python scripts/run_workflow.py \
-  --workflow "1983427617984585729" \
-  --params-json '{"prompt": "A cute cat wearing a spacesuit", "width": 1024, "height": 1024}'
-```
-
-## Internal Mechanism
-1. The script initializes `comfykit.ComfyKit` utilizing the API key from the environment.
-2. It fetches the ComfyUI workflow definition using the RunningHub REST API.
-3. ComfyKit's `WorkflowParser` matches the passed JSON parameter keys to predefined ComfyUI variables (e.g., node titles ending in `~prompt`). 
-4. Local valid file paths are intercepted and uploaded via `POST /task/openapi/upload`.
-5. The task is executed via `POST /task/openapi/create` and natively monitored for completion.
