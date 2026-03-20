@@ -152,7 +152,8 @@ async def main():
                 print(f"Videos ({len(result.videos)}):")
                 for vid in result.videos:
                     safe_vid = ensure_web_safe_video(vid)
-                    print(f" - {safe_vid}")
+                    print(f" - Local Web-Safe: {safe_vid}")
+                    print(f" - Original URL: {vid}")
                     
             if hasattr(result, 'texts') and result.texts:
                 print(f"Texts ({len(result.texts)}):")

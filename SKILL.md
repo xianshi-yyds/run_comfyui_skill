@@ -69,7 +69,13 @@ python scripts/run_workflow.py \
 ```bash
 python scripts/check_status.py --task-id <TASK_ID>
 ```
-4. If completed, the script will automatically transcode the downloaded video using `ffmpeg` to ensure maximum third-party chat compatibility.
+4. If completed, the script automatically transcodes the downloaded video using `ffmpeg` for maximum chat compatibility and prints both the local path and the `Original URL`.
+
+### 🚨 Step 5: Final Response Rules (CRITICAL)
+- **Video Rendering Constraints:** Many third-party chat software (Dify, etc.) fail to render local video paths and show error placeholders or static images.
+- Therefore, when returning Video results to the user, you **MUST** provide the `Original URL` directly in the chat as a clickable link.
+- **Format:** `[点击这里查看/下载生成的完整视频](Original URL)`
+- Never just return a local `/tmp/...` path for videos. Always prioritize outputting the remote URL.
 
 ---
 

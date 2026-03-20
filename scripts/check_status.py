@@ -106,7 +106,8 @@ async def main():
                 print(f"Videos ({len(videos)}):")
                 for vid in videos:
                     safe_vid = ensure_web_safe_video(vid)
-                    print(f" - {safe_vid}")
+                    print(f" - Local Web-Safe: {safe_vid}")
+                    print(f" - Original URL: {vid}")
                     
         elif status == 'FAIL':
             print(f"❌ Task failed: {status_data}", file=sys.stderr)
