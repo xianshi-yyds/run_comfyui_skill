@@ -1,9 +1,19 @@
 ---
 name: call_runninghub
-description: Run Cloud AI Workflows via RunningHub using ComfyKit
+description: "Run Cloud AI Workflows via RunningHub using ComfyKit. CURRENT CAPABILITIES INCLUDE: image_flux, video_wan2.1_fusionx. AI AGENT MUST READ workflows.yaml TO MAP USER INTENT TO WORKFLOW ID."
 ---
 
 # call_runninghub
+
+<!-- WORKFLOW_CAPABILITIES_START -->
+
+### 🛠️ Automatically Synced Capabilities
+*(This section is automatically updated from `workflows.yaml` by `scripts/sync_docs.py`)*
+
+- **image_flux** (ID: `1983427617984585729`): Generates high quality text-to-images using Flux. Trigger when the user asks for art, images, avatars, or general pictures.
+- **video_wan2.1_fusionx** (ID: `1985909483975188481`): Generates videos using the Wan2.1 framework. Used for action transfer, animating images, or creating videos. Trigger when the user asks to animate a photo or create a video.
+
+<!-- WORKFLOW_CAPABILITIES_END -->
 
 This skill enables an AI Agent to dynamically query, inspect, and trigger RunningHub cloud workflows (such as Image generation, Video generation, TTS, etc.). The underlying `comfykit` library fully manages parameter tracking and automatic local file uploads.
 
