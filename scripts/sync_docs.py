@@ -13,6 +13,7 @@ def main():
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     workflows_path = os.path.join(repo_root, 'workflows.yaml')
     custom_workflows_path = os.path.join(repo_root, 'workflows_custom.yaml')
+    pipelines_path = os.path.join(repo_root, 'pipelines.yaml')
     skill_path = os.path.join(repo_root, 'SKILL.md')
 
     if not os.path.exists(skill_path):
@@ -38,6 +39,24 @@ def main():
     if not workflows:
         print("No workflows found in workflows.yaml.")
         return
+
+    # Process Pipelines
+    pipelines_doc = ""
+    if os.path.exists(pipelines_path):
+        with open(pipelines_path, 'r', encoding='utf-8') as f:
+            p_data = yaml.safe_load(f)
+            if p_data and 'pipelines' in p_data:
+                pipelines = p_data['pipelines']
+                pipelines_doc += "## 🛣️ Agent Operating Pipelines (SOPs)\n"
+                pipelines_doc += "The user has defined specific multi-step workflows. If the user requests to execute one of these, you MUST follow the steps in exact order:\n\n"
+                for p in pipelines:
+                    pipelines_doc += f"### Pipeline: {p['name']}\n"
+                    pipelines_doc += f"**Description**: {p.get('description', '')}\n"
+                    for step in p.get('steps', []):
+                        pipelines_doc += f"- **Step {step['step']}**: {step['description']}\n"
+                        pipelines_doc += f"  - *Action*: {step['action']}\n"
+                        pipelines_doc += f"  - *Expected*: {step.get('expected_output', 'N/A')}\n"
+                    pipelines_doc += "\n"
 
     # 1. Generate keywords string for the YAML frontmatter
     # We combine names and snippets of descriptions for maximum LLM semantic matching

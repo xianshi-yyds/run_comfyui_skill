@@ -1,0 +1,15 @@
+pipelines:
+  - name: "Self-Media Avatar Pipeline (自媒体口播全链路)"
+    description: "A fixed sequence to generate a complete Lip-Sync avatar speaking video from a generated script."
+    steps:
+      - step: 1
+        description: "Generate Voice Audio from Text (TTS)."
+        action: "Call `scripts/run_workflow.py --async-mode` targeting the TTS Workflow ID. If you do not know the ID, ask the user for it first. Wait for completion using `check_status.py`."
+        expected_output: "Retrieve the `Original URL` of the generated audio (.wav/.mp3)."
+      - step: 2
+        description: "Generate Lip-Sync Video from Audio."
+        action: "Call `run_workflow.py --async-mode` targeting the Lip-Sync Workflow ID. Provide the audio URL from step 1, and the base avatar video path. Wait for completion."
+        expected_output: "Retrieve the `Original URL` of the generated video."
+      - step: 3
+        description: "Delivery"
+        action: "Provide the user with the final playable Original Video URL."
