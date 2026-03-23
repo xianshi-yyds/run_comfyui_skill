@@ -113,7 +113,7 @@ async def main():
             metadata = parser_obj.parse_workflow(workflow_json, f"workflow_{args.workflow}")
             
             # This securely auto-uploads any absolute paths before sending payload
-            node_info_list = await executor._convert_params_to_node_info_list(metadata.mapping_info, params, executor.client)
+            node_info_list = await executor._convert_params_to_node_info_list(metadata.mapping_infos, params, executor.client)
             
             # Fire and forget
             task_id = await executor.client.create_task(args.workflow, node_info_list)
