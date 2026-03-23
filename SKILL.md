@@ -10,7 +10,7 @@ description: "Run Cloud AI Workflows via RunningHub using ComfyKit. CURRENT CAPA
 ### 🛠️ Automatically Synced Capabilities
 *(This section is automatically updated from `workflows.yaml` by `scripts/sync_docs.py`)*
 
-- **爆款复刻 (Trending Clone)** (ID: `2035920199475535874`): 专门用于一键制作“爆款复刻”视频。当用户请求制作爆款复刻、数字人视频复刻时触发此工作流。 【强制入参要求】：此工作流强制要求用户提供 3 个本地文件的绝对路径素材（如果用户没给齐，Agent 必须主动向用户索要）： 1. 一张人物图 (例如：/tmp/person.jpg) 2. 一张产品图 (例如：/tmp/product.png) 3. 要复刻的爆款视频源文件 (例如：/tmp/trending_source.mp4)
+- **爆款复刻 (Trending Clone)** (ID: `2036000767693299714`): 专门用于一键制作“爆款复刻”视频。当用户请求制作爆款复刻、数字人视频复刻时触发此工作流。 【强制入参要求】：此工作流强制要求用户提供 3 个本地文件的绝对路径素材（如果用户没给齐，Agent 必须主动向用户索要）： 1. 一张人物图 (例如：/tmp/person.jpg) 2. 一张产品图 (例如：/tmp/product.png) 3. 要复刻的爆款视频源文件 (例如：/tmp/trending_source.mp4)
 
 
 <!-- WORKFLOW_CAPABILITIES_END -->
