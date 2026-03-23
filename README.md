@@ -26,3 +26,6 @@ python scripts/run_workflow.py \
   --workflow "1983427617984585729" \
   --params-json '{"prompt": "A futuristic city in the rain, cyberpunk style", "width": 1024, "height": 768}'
 ```
+
+## 🙏 Acknowledgments
+Special thanks to the [ComfyKit](https://github.com/puke3615/ComfyKit) library for providing the robust Python SDK foundation that makes communicating with the RunningHub API seamless and efficient.
