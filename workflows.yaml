@@ -10,3 +10,4 @@ workflows:
       1. 一张人物图 (例如：/tmp/person.jpg)
       2. 一张产品图 (例如：/tmp/product.png)
       3. 要复刻的爆款视频源文件 (例如：/tmp/trending_source.mp4)
+      🚨【防 SSL 报错及 URL 拦截核心规则】：若参数输入为网络 URL（特别如抖音/小红书），直接传给工作流会导致云端节点 yt-dlp 触发 `[SSL: CERTIFICATE_VERIFY_FAILED]` 报错！因此 Agent 必须先使用内部代码将视频/图片彻底下载到本地 (如 /tmp)，然后再将该本地绝对路径作为参数触发工作流。绝对禁止直接把 URL 传给工作流！

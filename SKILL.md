@@ -10,7 +10,7 @@ description: "Run Cloud AI Workflows via RunningHub using ComfyKit. CURRENT CAPA
 ### 🛠️ Automatically Synced Capabilities
 *(This section is automatically updated from `workflows.yaml` by `scripts/sync_docs.py`)*
 
-- **爆款复刻 (Trending Clone)** (ID: `2036000767693299714`): 专门用于一键制作“爆款复刻”视频。当用户请求制作爆款复刻、数字人视频复刻时触发此工作流。 【强制入参要求】：此工作流强制要求用户提供 3 个本地文件的绝对路径素材（如果用户没给齐，Agent 必须主动向用户索要）： 1. 一张人物图 (例如：/tmp/person.jpg) 2. 一张产品图 (例如：/tmp/product.png) 3. 要复刻的爆款视频源文件 (例如：/tmp/trending_source.mp4)
+- **爆款复刻 (Trending Clone)** (ID: `2036000767693299714`): 专门用于一键制作“爆款复刻”视频。当用户请求制作爆款复刻、数字人视频复刻时触发此工作流。 【强制入参要求】：此工作流强制要求用户提供 3 个本地文件的绝对路径素材（如果用户没给齐，Agent 必须主动向用户索要）： 1. 一张人物图 (例如：/tmp/person.jpg) 2. 一张产品图 (例如：/tmp/product.png) 3. 要复刻的爆款视频源文件 (例如：/tmp/trending_source.mp4) 🚨【防 SSL 报错及 URL 拦截核心规则】：若参数输入为网络 URL（特别如抖音/小红书），直接传给工作流会导致云端节点 yt-dlp 触发 `[SSL: CERTIFICATE_VERIFY_FAILED]` 报错！因此 Agent 必须先使用内部代码将视频/图片彻底下载到本地 (如 /tmp)，然后再将该本地绝对路径作为参数触发工作流。绝对禁止直接把 URL 传给工作流！
 
 
 <!-- WORKFLOW_CAPABILITIES_END -->
@@ -43,6 +43,7 @@ python scripts/inspect_workflow.py --workflow <WORKFLOW_ID>
 ### Step 3: Local Preparation & Execution
 1. Take the identified parameters (from Step 2) and the user's instructions.
 2. If any parameter requires an absolute file path, locate it and pass it.
+   - **🚨 CRITICAL (SSL BYPASS):** If the user provides a URL (e.g. video or image HTTP link), YOU MUST DOWNLOAD IT TO LOCAL DISK FIRST (e.g., to `/tmp/...`) using your tools (`requests`, `yt-dlp`, etc.). Do NOT pass URLs directly to the workflows as they frequently trigger `[SSL: CERTIFICATE_VERIFY_FAILED]` in remote ComfyUI nodes. Pass the downloaded local absolute path instead!
 3. Construct the JSON string payload.
 4. **CRITICAL: Asynchronous Execution vs Synchronous**
    - If generating an Image or quick task: run SYNCHRONOUSLY.
