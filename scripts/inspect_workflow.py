@@ -62,6 +62,7 @@ async def main():
             
             upload_req = "📁 [REQUIRES ABSOLUTE FILE PATH]" if need_upload else ""
             print(f" - Parameter Name : '{param_name}' {upload_req}")
+            print(f"   Node ID        : {mapping.node_id}")
             print(f"   Node Type      : {node_type}")
             print(f"   Target Field   : {mapping.input_field}")
             print("-" * 50)

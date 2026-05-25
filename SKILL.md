@@ -1,6 +1,6 @@
 ---
 name: call_runninghub
-description: "Run Cloud AI Workflows via RunningHub using ComfyKit. CURRENT CAPABILITIES INCLUDE: 爆款复刻 (Trending Clone). AI AGENT MUST READ workflows.yaml TO MAP USER INTENT TO WORKFLOW ID."
+description: "Run Cloud AI Workflows via RunningHub using ComfyKit. CURRENT CAPABILITIES INCLUDE: TTS 文本转语音 (Text to Speech), 爆款复刻 (Trending Clone). AI AGENT MUST READ workflows.yaml TO MAP USER INTENT TO WORKFLOW ID."
 ---
 
 # call_runninghub
@@ -9,6 +9,8 @@ description: "Run Cloud AI Workflows via RunningHub using ComfyKit. CURRENT CAPA
 
 ### 🛠️ Automatically Synced Capabilities
 *(This section is automatically updated from `workflows.yaml` by `scripts/sync_docs.py`)*
+
+- **TTS 文本转语音 (Text to Speech)** (ID: `2035267253943410690`): 文本转语音工作流。用户请求 TTS、文本转语音、把文字生成语音、生成口播音频时触发此工作流。 【入参要求】：只需要传入 text，即要合成为语音的文本内容。 不要向用户索要 ref_audio；默认使用工作流内置参考音频/默认声音配置。 输出为音频文件。
 
 - **爆款复刻 (Trending Clone)** (ID: `2036000767693299714`): 专门用于一键制作“爆款复刻”视频。当用户请求制作爆款复刻、数字人视频复刻时触发此工作流。 【强制入参要求】：此工作流强制要求用户提供 3 个本地文件的绝对路径素材（如果用户没给齐，Agent 必须主动向用户索要）： 1. 一张人物图 (例如：/tmp/person.jpg) 2. 一张产品图 (例如：/tmp/product.png) 3. 要复刻的爆款视频源文件 (例如：/tmp/trending_source.mp4) 🚨【防 SSL 报错及 URL 拦截核心规则】：若参数输入为网络 URL（特别如抖音/小红书），直接传给工作流会导致云端节点 yt-dlp 触发 `[SSL: CERTIFICATE_VERIFY_FAILED]` 报错！因此 Agent 必须先使用内部代码将视频/图片彻底下载到本地 (如 /tmp)，然后再将该本地绝对路径作为参数触发工作流。绝对禁止直接把 URL 传给工作流！
 

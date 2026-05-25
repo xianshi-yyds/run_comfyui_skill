@@ -2,6 +2,14 @@
 # Intent Registry / Router for AI Agents
 
 workflows:
+  - name: TTS 文本转语音 (Text to Speech)
+    id: "2035267253943410690"
+    description: >
+      文本转语音工作流。用户请求 TTS、文本转语音、把文字生成语音、生成口播音频时触发此工作流。
+      【入参要求】：只需要传入 text，即要合成为语音的文本内容。
+      不要向用户索要 ref_audio；默认使用工作流内置参考音频/默认声音配置。
+      输出为音频文件。
+
   - name: 爆款复刻 (Trending Clone)
     id: "2036000767693299714"
     description: >

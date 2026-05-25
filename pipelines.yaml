@@ -4,7 +4,7 @@ pipelines:
     steps:
       - step: 1
         description: "Generate Voice Audio from Text (TTS)."
-        action: "Call `scripts/run_workflow.py --async-mode` targeting the TTS Workflow ID. If you do not know the ID, ask the user for it first. Wait for completion using `check_status.py`."
+        action: "Call `scripts/run_workflow.py --workflow 2035267253943410690 --async-mode` with `text` only. Wait for completion using `check_status.py`."
         expected_output: "Retrieve the `Original URL` of the generated audio (.wav/.mp3)."
       - step: 2
         description: "Generate Lip-Sync Video from Audio."
